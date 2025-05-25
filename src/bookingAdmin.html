@@ -31,8 +31,7 @@
     <main>
         <section>
             <h1>Bokningar</h1>
-            <h2 id="todaysBookingsDate"></h2>
-            <table id="todaysBookings">
+            <table>
                 <thead>
                     <tr>
                         <td>Namn</td>
@@ -43,11 +42,11 @@
                         <td>Tid</td>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="upcomingBookings">
                     
                 </tbody>
             </table>
-            <h2 id="otherBookingsDate"></h2>
+            <h2>Obekräftade</h2>
             <table id="otherBookings">
                 <thead>
                     <tr>
@@ -57,6 +56,7 @@
                         <td>Antal</td>
                         <td>Datum</td>
                         <td>Tid</td>
+                        <td>Bekräfta</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,7 +72,7 @@
             <p>Restaurang gatan 1</p>
             <p>Staden 123 45</p>
         </div>
-        <span id="adminLink"><a href="bookingAdmin.html">Administratör</a></span>
+        <p id='logout' class="adminLink">Logga ut</p>
     </footer>
 </body>
 </html>

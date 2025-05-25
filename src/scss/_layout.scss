@@ -78,6 +78,31 @@ section > p {
     margin-bottom: 60px;
 }
 
+#displayReviews {
+    display: flex;
+    width: 90%;
+    justify-self: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.reviewArticle {
+    width: 10%;
+    padding: 50px 5%;
+    margin: 10px;
+    box-shadow: 0 0 10 rgba(31, 51, 69, 0.9);
+    border-radius: 15px;
+    background-color: base.$secondary-color;
+    background-image: url("../images/citat.svg");
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position-y: top;
+    background-position-x: 10;
+    color: base.$primary-color;
+    font-weight: 500;
+    text-align: center;
+}
+
 #makeReview {
     cursor: pointer;
 }
@@ -196,7 +221,7 @@ footer > div > p {
     margin: 10px 0px;
 }
 
-#adminLink {
+.adminLink {
     margin-left: auto;
     margin-top: auto;
     margin-bottom: 10px;

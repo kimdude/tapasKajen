@@ -5,6 +5,7 @@
     <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
     <link rel="stylesheet" href="scss/main.scss">
     <title>Tapas kajen</title>
+    <script type="module" src="js/checkAuth.js"></script>
     <script type="module" src="js/main.js" defer></script>
 </head>
 <body>
@@ -30,7 +31,7 @@
     <main>
         <section>
             <h1>Redigera drinkmeny</h1>
-            <table id="drinkMenu">
+            <table id="drinkMenuAdmin">
                 <thead>
                     <tr>
                         <td>Namn</td>
@@ -67,7 +68,7 @@
             <p>Restaurang gatan 1</p>
             <p>Staden 123 45</p>
         </div>
-        <span id="adminLink"><a href="bookingAdmin.html">Administratör</a></span>
+        <p id='logout' class="adminLink">Logga ut</p>
     </footer>
 </body>
 </html>
