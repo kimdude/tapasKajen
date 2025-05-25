@@ -1,0 +1,59 @@
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
+    <link rel="stylesheet" href="scss/main.scss">
+    <title>Tapas kajen</title>
+    <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+    <!-- Intro banner with main navigation -->
+    <header>
+        <a href="index.html"><img width="120" src="images/logotyp_ljus.svg" alt="Logotyp för Tapas kajen" id="logo"></a>
+        <nav>
+            <ul>
+                <a href="index.html"><li>Hem</li></a>
+                <a href="menu.html" class="active"><li>Meny</li></a>
+                <a href="booking.html"><li>Bokning</li></a>
+            </ul>
+        </nav>
+    </header>
+    <main id="menuMain">
+        <div id="gallery">
+            <picture>
+                <source srcset="images/tapas_tre.jpg?as=webp" type="image/webp" />
+                <img src="images/tapas_tre.jpg" width=320 alt="Tapasmacka med krossad avokado och ett rinnande ägg på.">
+            </picture>
+            <picture>
+                <source srcset="images/tapas.jpg?as=webp" type="image/webp" />
+                <img src="images/tapas.jpg" width=320 alt="Olika tapasrätter placerade bland grönsaker och vinflaskor.">
+            </picture>
+            <picture>
+                <source srcset="images/tapas_tva.jpg?as=webp" type="image/webp" />
+                <img src="images/tapas_tva.jpg" width=320 alt="Soppa med koriander, citron och chili.">
+            </picture>
+        </div>
+        <section>
+            <h1>Meny</h1>
+            <div id="tapasMenu" class="menuFrame">
+                <h2 class="menuHeader">Tapas</h2>
+
+            </div>
+            <div id="drinksMenu" class="menuFrame">
+                <h2 class="menuHeader">Drinkar</h2>
+
+            </div>
+        </section>
+    </main>
+    <!-- Footer with admin login -->
+    <footer>
+        <div>
+            <p><strong>Tapas kajen</strong></p>
+            <p>Restaurang gatan 1</p>
+            <p>Staden 123 45</p>
+        </div>
+        <span id="adminLink"><a href="bookingAdmin.html">Administratör</a></span>
+    </footer>
+</body>
+</html>

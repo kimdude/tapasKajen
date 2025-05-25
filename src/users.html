@@ -1,0 +1,54 @@
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
+    <link rel="stylesheet" href="scss/main.scss">
+    <title>Tapas kajen</title>
+    <script type="module" src="js/checkAuth.js"></script>
+    <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+    <!-- Intro banner with main navigation -->
+    <header>
+        <a href="index.html"><img width="120" src="images/logotyp_ljus.svg" alt="Logotyp för Tapas kajen" id="logo"></a>
+        <nav>
+            <ul>
+                <a href="index.html"><li>Hem</li></a>
+                <a href="menu.html"><li>Meny</li></a>
+                <a href="booking.html"><li>Bokning</li></a>
+            </ul>
+        </nav>
+    </header>
+    <nav id="adminNav">
+        <ul id="adminUl">
+            <a href="bookingAdmin.html"><li>Bokningar ►</li></a>
+            <a href="tapasAdmin.html"><li>Redigera tapas meny ►</li></a>
+            <a href="drinksAdmin.html"><li>Redigera drink menu ►</li></a>
+            <a href="users.html" class="active"><li>Lägg till användare ►</li></a>
+        </ul>
+    </nav>
+    <main>
+        <section>
+            <h1>Registrera användare</h1>
+            <form>
+                <label for="usernameRegister">Användare: </label>
+                <input type="text" name="usernameRegister" id="usernameRegister">
+                <label for="passwordRegister">Lösenord: </label>
+                <input type="password" name="passwordRegister" id="passwordRegister">
+                <span id="registerErrors"></span>
+                <button id="submitRegister">Registrera</button>
+            </form>
+        </section>
+    </main>
+    <!-- Footer with admin login -->
+    <footer>
+        <div>
+            <p><strong>Tapas kajen</strong></p>
+            <p>Restaurang gatan 1</p>
+            <p>Staden 123 45</p>
+        </div>
+        <span id="adminLink"><a href="bookingAdmin.html">Administratör</a></span>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
+    <link rel="stylesheet" href="scss/main.scss">
+    <title>Tapas kajen</title>
+    <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+    <!-- Intro banner with main navigation -->
+    <header>
+        <a href="index.html"><img width="120" src="images/logotyp_ljus.svg" alt="Logotyp för Tapas kajen" id="logo"></a>
+        <nav>
+            <ul>
+                <a href="index.html"><li>Hem</li></a>
+                <a href="menu.html"><li>Meny</li></a>
+                <a href="booking.html" class="active"><li>Bokning</li></a>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h1>Boka bord</h1>
+            <form>
+                <label for="firstnameBooking">Förnamn: </label>
+                <input type="text" name="firstnameBooking" id="firstnameBooking"><br>
+                <label for="surnameBooking">Efternamn: </label>
+                <input type="text" name="surnameBooking" id="surnameBooking"><br>
+                <label for="email">Epost: </label>
+                <input type="email" name="email" id="email"><br>
+                <hr>
+                <div id="bookingDetails">
+                    <div>
+                        <label for="date">Datum: </label>
+                        <input type="date" name="date" id="date">
+                        <label for="time">Tid: </label>
+                        <input type="time" name="time" id="time">
+                    </div>
+                    <label for="group">Antal personer: </label>
+                    <input type="number" name="group" id="group">
+                </div>
+                <label for="message">Meddelande: </label>
+                <textarea rows="5" name="reviewMessage" id="message">
+                </textarea>
+                <span id="errorsBookingForm"></span>
+                <button id="submitBooking">Boka</button>
+            </form>
+        </section>
+    </main>
+    <!-- Footer with admin login -->
+    <footer>
+        <div>
+            <p><strong>Tapas kajen</strong></p>
+            <p>Restaurang gatan 1</p>
+            <p>Staden 123 45</p>
+        </div>
+        <span id="adminLink"><a href="bookingAdmin.html">Administratör</a></span>
+    </footer>
+</body>
+</html>

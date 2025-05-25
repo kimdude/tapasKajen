@@ -1,0 +1,21 @@
+{
+  "name": "tapaskajen",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel src/index.html src/login.html",
+    "build": "parcel build src/index.html src/login.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "parcel": "^2.15.1"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.15.1",
+    "sharp": "^0.33.5"
+  }
+}

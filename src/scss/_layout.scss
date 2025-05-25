@@ -1,0 +1,203 @@
+@use "base.scss";
+
+//General
+body {
+    font-family: base.$main-font;
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0px;
+    color: base.$secondary-color;
+    background-color: base.$quartinary-color;
+}
+
+h1 {
+    margin-top: 40px;
+    color: base.$tertiary-color;
+    font-size: 1.9rem;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.6rem;
+    text-align: center;
+}
+
+
+//Navigation
+header {
+    z-index: 1000;
+    display: block;
+    padding: 40px 5% 20px 5%;
+    background-color: base.$primary-color;
+    box-shadow: 2 2 10 rgba(31, 51, 69, 0.9);
+}
+
+#introHeader {
+    background-color: rgba(31, 51, 69, 0.9);
+}
+
+#logo {
+    display: block;
+    justify-self: center;
+}
+
+ul {
+    justify-self: center;
+    display: flex;
+    list-style-type: none;
+}
+
+ul > a {
+    text-decoration: none;
+    color: base.$tertiary-color;
+}
+
+.active {
+    font-weight: 600;
+}
+
+li {
+    padding: 10px 20px;
+}
+
+#banner {
+    height: 600px;
+    background-image: url("../images/tapas_kajen.jpg");
+    background-size: cover;
+    background-position: center;
+
+}
+
+//Homepage
+section > p {
+    text-align: center;
+}
+
+#introText {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+#makeReview {
+    cursor: pointer;
+}
+
+#reviewForm {
+    display: none;
+}
+
+//Menu page
+#menuMain {
+    display: flex;
+
+}
+
+picture {
+    display: block;
+    margin: 10px 0px;
+}
+
+#menuMain > section {
+    flex-grow: 1;
+}
+
+.menuFrame {
+    margin: 80px auto;
+    width: 60%;
+    border: 1px solid base.$tertiary-color;
+}
+
+.menuHeader {
+    position: relative;
+    width: 20%;
+    top: -40;
+    margin-bottom: -40px;
+    justify-self: center;
+    color: base.$tertiary-color !important; 
+    background-color: base.$quartinary-color;
+}
+
+article {
+    width: 90%;
+    justify-self: center;
+}
+
+article > div {
+    display: flex;
+}
+
+article > div > p {
+    margin-bottom: 0px;
+}
+
+article > p {
+    margin-top: 0px;
+}
+
+.price {
+    margin-left: auto;
+}
+
+//Booking page
+hr {
+    background-color: base.$tertiary-color;
+    width: 80%;
+}
+
+//Admin pages
+//Bookings admin
+#adminNav {
+    background-color: base.$secondary-color;
+    box-shadow: 2 2 10 rgba(31, 51, 69, 0.9);
+}
+
+#adminUl {
+    margin-top: 0px;
+}
+
+#adminUl > a {
+    color: base.$primary-color;
+    font-size: 1.1rem;
+}
+
+table {
+    width: 80%;
+    justify-self: center;
+}
+
+thead {
+    color: base.$primary-color;
+    background-color: base.$secondary-color;
+}
+
+td {
+    border-bottom: 1px solid base.$secondary-color;
+}
+
+#otherBookings {
+    margin-bottom: 80px;
+}
+
+//Drink menu admin
+#newDrinkDiv, #newTapasDiv  {
+    display: none;
+}
+
+//Footer
+footer {
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+    padding: 20px 5%;
+    background-color: base.$primary-color;
+}
+
+footer > div > p {
+    margin: 10px 0px;
+}
+
+#adminLink {
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: 10px;
+}

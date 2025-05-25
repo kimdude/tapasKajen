@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
+    <link rel="stylesheet" href="scss/main.scss">
+    <title>Tapas kajen</title>
+    <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+    <!-- Intro banner with main navigation -->
+    <div id="banner">
+        <header id="introHeader">
+            <a href="index.html"><img width="120" src="images/logotyp_ljus.svg" alt="Logotyp för Tapas kajen" id="logo"></a>
+            <nav>
+                <ul>
+                    <a href="index.html" class="active"><li>Hem</li></a>
+                    <a href="menu.html"><li>Meny</li></a>
+                    <a href="booking.html"><li>Bokning</li></a>
+                </ul>
+            </nav>
+        </header>
+    </div>
+    <main>
+        <section id="introText">
+            <h1>Tapas kajen</h1>
+            <p>Välkommen till en Tapas kajen, vår restaurang direkt vid Södra kajen! Vi bjuder på nya tapas varje månad.</p>
+            <a href="menu.html">Vår meny ►</a>
+        </section>
+        <!-- Section displaying reviews -->
+        <section id="viewReviews">
+            <h2>Recensioner</h2>
+            <div id="displayReviews">
+
+            </div>
+            <!-- Form for reviews-->
+            <p id="makeReview">Gör en recension ►</p>
+            <form id="reviewForm">
+                <label for="firstname">Förnamn: </label>
+                <input type="text" name="firstname" id="firstname">
+                <label for="surname">Efternamn: </label>
+                <input type="text" name="surname" id="surname">
+                <label for="reviewMessage">Recension: </label>
+                <textarea rows="5" name="reviewMessage" id="reviewMessage">
+                </textarea>
+                <span id="errorsReviewForm"></span>
+                <button id="submitReview">Skicka</button>
+            </form>
+        </section>
+    </main>
+    <!-- Footer with admin login -->
+    <footer>
+        <div>
+            <p><strong>Tapas kajen</strong></p>
+            <p>Restaurang gatan 1</p>
+            <p>Staden 123 45</p>
+        </div>
+        <span id="adminLink"><a href="bookingAdmin.html">Administratör</a></span>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
+    <link rel="stylesheet" href="scss/main.scss">
+    <title>Tapas kajen</title>
+    <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+    <!-- Intro banner with main navigation -->
+    <header>
+        <a href="index.html"><img width="120" src="images/logotyp_ljus.svg" alt="Logotyp för Tapas kajen" id="logo"></a>
+        <nav>
+            <ul>
+                <a href="index.html"><li>Hem</li></a>
+                <a href="menu.html"><li>Meny</li></a>
+                <a href="booking.html"><li>Bokning</li></a>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h1>Logga in</h1>
+            <form>
+                <label for="username">Användare: </label>
+                <input type="text" name="username" id="username">
+                <label for="password">Lösenord: </label>
+                <input type="password" name="password" id="password">
+                <span id="loginErrors"></span>
+                <button id="submitLogin">Logga in</button>
+            </form>
+        </section>
+    </main>
+    <!-- Footer with admin login -->
+    <footer>
+        <div>
+            <p><strong>Tapas kajen</strong></p>
+            <p>Restaurang gatan 1</p>
+            <p>Staden 123 45</p>
+        </div>
+        <span id="adminLink"><a href="bookingAdmin.html" class="active">Administratör</a></span>
+    </footer>
+</body>
+</html>
