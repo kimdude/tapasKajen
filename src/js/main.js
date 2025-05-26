@@ -74,6 +74,70 @@ if(bookings) {
     allBookings();
 }
 
+/* Fetching API:s */
+//Logging in user
+async function login(e) {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const errors = document.getElementById("loginErrors");
+
+    if(username === "" || password === "") {
+        errors.innerHTML = "Ange <strong>användarnamn</strong> och <strong>lösenord</strong>."
+    } else {
+        let loggedUser = {
+            username: username,
+            password: password
+        }
+
+        try {
+            const result = await fetch("https://projekt-databas.onrender.com/api/login",{
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(loggedUser)
+           });
+
+           if(result.ok) {
+            const data = await result.json();
+
+            localStorage.setItem("userToken", data.response.token);
+            window.location.href = "bookingAdmin.html";
+
+           } else {
+            throw error;
+           }
+
+        } catch(error) {
+            errors.innerHTML = "Fel användarnamn eller lösenord."
+        }
+    }
+}
+
+//Fetching menus and reviews
+async function fetchData(routing) {
+    try {
+        const result = await fetch(`https://projekt-databas.onrender.com/api/menu${routing}`, {
+            method: "GET",
+            headers: {
+                "content-type": "application/json"
+            }
+        });
+
+        if(result.ok) {
+            const data = await result.json();
+            return data;
+        } else {
+            throw error;
+        }
+
+    } catch(error) {
+        console.log(error);
+    }
+}
+
 //Fetching bookings and menus
 async function fetchDataAdmin(routing) {
     const currentToken = localStorage.getItem("userToken");
@@ -124,15 +188,12 @@ async function editData(routingAndId, object) {
         }
 
     } catch(error) {
-        const errors = document.getElementById("loginErrors");
         window.location.href = "login.html";
-        errors.innerHTML = "Du måste logga in pånytt."
     }
 }
 
 //Deleting bookings and menu items
 async function deleteData(routingAndId) {
-    console.log("Kom fram")
     const currentToken = localStorage.getItem("userToken");
 
     try {
@@ -153,183 +214,7 @@ async function deleteData(routingAndId) {
         }
 
     } catch(error) {
-        const errors = document.getElementById("loginErrors");
         window.location.href = "login.html";
-        errors.innerHTML = "Du måste logga in pånytt."
-    }
-}
-
-//Sorting bookings for admin
-async function allBookings() {
-    const data = await fetchDataAdmin("/bookings");
-
-    for(let i = 0; i < data.length; i++) {
-        if(data[i].confirmed === true) {
-            confirmedBooking(data[i]);
-            
-        } else {
-            requestedBooking(data[i]);
-        }
-    }
-
-    console.log(data)
-}
-
-//Displaying requested bookings
-function requestedBooking(booking) {
-    const requestedBookings = document.getElementById("otherBookings");
-
-    const tableRow = document.createElement("tr");
-    const nameTd = document.createElement("td");
-    const name = document.createTextNode(booking.firstname + " " + booking.surname);
-
-    requestedBookings.appendChild(tableRow);
-    tableRow.appendChild(nameTd);
-    nameTd.appendChild(name);
-
-    const emailTd = document.createElement("td");
-    const email = document.createTextNode(booking.email);
-    tableRow.appendChild(emailTd);
-    emailTd.appendChild(email);
-
-    const messageTd = document.createElement("td");
-    const message = document.createTextNode(booking.message);
-    tableRow.appendChild(messageTd);
-    messageTd.appendChild(message);
-
-    const peopleTd = document.createElement("td");
-    const people = document.createTextNode(booking.people);
-    tableRow.appendChild(peopleTd);
-    peopleTd.appendChild(people);
-
-    const dateTd = document.createElement("td");
-    const date = document.createTextNode(booking.booked_date);
-    tableRow.appendChild(dateTd);
-    dateTd.appendChild(date);
-
-    const timeTd = document.createElement("td");
-    const time = document.createTextNode(booking.booked_time);
-    tableRow.appendChild(timeTd);
-    timeTd.appendChild(time);
-
-    const confirmTd = document.createElement("td");
-    const select = document.createElement("select");
-    const chooseOption = document.createElement("option");
-    chooseOption.setAttribute("hidden", "true");
-    const confirmOption = document.createElement("option");
-    const denyOption = document.createElement("option");
-
-    const choose = document.createTextNode("Obesvarad");
-    const confirm = document.createTextNode("Bekräfta");
-    const deny = document.createTextNode("Avböj");
-
-    tableRow.appendChild(confirmTd);
-    confirmTd.appendChild(select);
-    select.appendChild(chooseOption);
-    chooseOption.appendChild(choose);
-    select.appendChild(confirmOption);
-    confirmOption.appendChild(confirm);
-    select.appendChild(denyOption);
-    denyOption.appendChild(deny);
-
-    select.addEventListener("input", function(e) {
-        const id = booking.booking_num;
-
-        if(e.target.value === "Bekräfta") {
-            const confirmedBooking = {
-                message: booking.message,
-                booked_date: booking.booked_date,
-                booked_time: booking.booked_time,
-                people: booking.people,
-                confirmed: true
-            }
-
-            editData(`/bookings/${id}`, confirmedBooking);
-
-        } else {
-            deleteData(`/bookings/${id}`);
-
-        }
-    })
-  
-}
-
-
-//Displaying confirmed bookings
-async function confirmedBooking(booking) {
-    const tableRow = document.createElement("tr");
-    const nameTd = document.createElement("td");
-    const name = document.createTextNode(booking.firstname + " " + booking.surname);
-
-    bookings.appendChild(tableRow);
-    tableRow.appendChild(nameTd);
-    nameTd.appendChild(name);
-
-    const emailTd = document.createElement("td");
-    const email = document.createTextNode(booking.email);
-    tableRow.appendChild(emailTd);
-    emailTd.appendChild(email);
-
-    const messageTd = document.createElement("td");
-    const message = document.createTextNode(booking.message);
-    tableRow.appendChild(messageTd);
-    messageTd.appendChild(message);
-
-    const peopleTd = document.createElement("td");
-    const people = document.createTextNode(booking.people);
-    tableRow.appendChild(peopleTd);
-    peopleTd.appendChild(people);
-
-    const dateTd = document.createElement("td");
-    const date = document.createTextNode(booking.booked_date);
-    tableRow.appendChild(dateTd);
-    dateTd.appendChild(date);
-
-    const timeTd = document.createElement("td");
-    const time = document.createTextNode(booking.booked_time);
-    tableRow.appendChild(timeTd);
-    timeTd.appendChild(time);
-}
-
-
-//Logging in user
-async function login(e) {
-    e.preventDefault();
-
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    const errors = document.getElementById("loginErrors");
-
-    if(username === "" || password === "") {
-        errors.innerHTML = "Ange <strong>användarnamn</strong> och <strong>lösenord</strong>."
-    } else {
-        let loggedUser = {
-            username: username,
-            password: password
-        }
-
-        try {
-            const result = await fetch("https://projekt-databas.onrender.com/api/login",{
-                method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify(loggedUser)
-           });
-
-           if(result.ok) {
-            const data = await result.json();
-
-            localStorage.setItem("userToken", data.response.token);
-            window.location.href = "bookingAdmin.html";
-
-           } else {
-            throw error;
-           }
-
-        } catch(error) {
-            console.log(error);
-        }
     }
 }
 
@@ -356,50 +241,258 @@ async function customerInputs(routing, object) {
     }
 }
 
-//Creates new review
-async function postReview(e) {
-    e.preventDefault();
 
-    const fname = document.getElementById("firstname").value;
-    const lname = document.getElementById("surname").value;
-    const email = document.getElementById("emailReview").value;
-    const message = document.getElementById("reviewMessage").value.trim();
-    const errorSpan = document.getElementById("errorsReviewForm");
-    const errors = [];
+/* Bookings */
+//Sorting bookings for admin
+async function allBookings() {
+    const requestedBookings = document.getElementById("otherBookings");
+    const data = await fetchDataAdmin("/bookings");
 
-    if(!fname) {
-        errors.push(" förnamn");
+    //Getting current date
+    const date = new Date
+    let today = date.getDate();
+    let month = date.getMonth() +1;
+    const year = date.getFullYear();
+    const upcomingBooking = [];
+
+    if(today < 10) {
+        let formatedToday = "0" + today;
+        today = formatedToday;
     }
 
-    if(!lname) {
-        errors.push(" efternamn");
+    if(month < 10) {
+        let formatedMonth = "0" + month;
+        month = formatedMonth;
     }
 
-    if(!email) {
-        errors.push(" epost");
-    }
+    //Sorting out old bookings
+    const fullDate = year + "-" + month + "-" + today;
+    data.forEach((booked) => {
+        const formatedDate = booked.booked_date.slice(0,10);
 
-    if(!message) {
-        errors.push(" recension");
-    }
-
-    if(errors.length > 0) {
-        errorSpan.innerHTML = `<p> Ange <strong>${errors}</strong>.</p>`;
-
-    } else {
-        let newReview = {
-            firstname: fname,
-            surname: lname,
-            email: email,
-            message: message
+        if(formatedDate >= fullDate) {
+            return upcomingBooking.push(booked);
         }
+    });
 
-        customerInputs("/reviews", newReview);
-        toggleReviewForm();
+    //Sorting upcoming bookings after time
+    const sortedBookings = upcomingBooking.sort((a,b) => {
+
+        //Creating new date object from booked date and time
+        const dateA = a.booked_date.slice(0,10);
+        const dateB = b.booked_date.slice(0,10);
+        const timeStampA = new Date(`${dateA}T${a.booked_time}`);
+        const timeStampB = new Date(`${dateB}T${b.booked_time}`);
+
+        return timeStampA - timeStampB;
+    });
+    
+    //Emptying tables
+    bookings.innerHTML = "";
+    requestedBookings.innerHTML = "";
+
+    for(let i = 0; i < sortedBookings.length; i++) {
+        if(sortedBookings[i].confirmed === true) {
+            confirmedBooking(sortedBookings[i]);
+            
+        } else {
+            requestedBooking(sortedBookings[i]);
+        }
     }
 }
 
-//Creates new booking
+//Displaying requested bookings
+function requestedBooking(booking) {
+    const requestedBookings = document.getElementById("otherBookings");
+    const formatedDate = booking.booked_date.slice(0,10);
+    const formatedTime = booking.booked_time.slice(0,5);
+
+    const tableRow = document.createElement("tr");
+    const nameTd = document.createElement("td");
+    const name = document.createTextNode(booking.firstname + " " + booking.surname);
+
+    requestedBookings.appendChild(tableRow);
+    tableRow.appendChild(nameTd);
+    nameTd.appendChild(name);
+
+    const emailTd = document.createElement("td");
+    const email = document.createTextNode(booking.email);
+    tableRow.appendChild(emailTd);
+    emailTd.appendChild(email);
+
+    const messageTd = document.createElement("td");
+    const message = document.createTextNode(booking.message);
+    tableRow.appendChild(messageTd);
+    messageTd.appendChild(message);
+
+    const peopleTd = document.createElement("td");
+    const people = document.createTextNode(booking.people);
+    tableRow.appendChild(peopleTd);
+    peopleTd.appendChild(people);
+
+    const dateTd = document.createElement("td");
+    const date = document.createTextNode(formatedDate);
+    tableRow.appendChild(dateTd);
+    dateTd.appendChild(date);
+
+    const timeTd = document.createElement("td");
+    const time = document.createTextNode(formatedTime);
+    tableRow.appendChild(timeTd);
+    timeTd.appendChild(time);
+
+    const confirmTd = document.createElement("td");
+    const select = document.createElement("select");
+    const chooseOption = document.createElement("option");
+    chooseOption.setAttribute("hidden", "true");
+    const confirmOption = document.createElement("option");
+    const denyOption = document.createElement("option");
+
+    const choose = document.createTextNode("Obesvarad");
+    const confirm = document.createTextNode("Bekräfta");
+    const deny = document.createTextNode("Avböj");
+
+    tableRow.appendChild(confirmTd);
+    confirmTd.appendChild(select);
+    select.appendChild(chooseOption);
+    chooseOption.appendChild(choose);
+    select.appendChild(confirmOption);
+    confirmOption.appendChild(confirm);
+    select.appendChild(denyOption);
+    denyOption.appendChild(deny);
+
+    select.addEventListener("input", async function(e) {
+        const id = booking.booking_num;
+
+        if(e.target.value === "Bekräfta") {
+            const confirmedBooking = {
+                message: booking.message,
+                booked_date: booking.booked_date,
+                booked_time: booking.booked_time,
+                people: booking.people,
+                confirmed: true
+            }
+
+            await editData(`/bookings/${id}`, confirmedBooking);
+            allBookings();
+
+        } else {
+            await deleteData(`/bookings/${id}`);
+            allBookings();
+        }
+    });
+}
+
+//Displaying confirmed bookings
+async function confirmedBooking(booking) {
+    const formatedDate = booking.booked_date.slice(0,10);
+    const formatedTime = booking.booked_time.slice(0,5);
+
+    const tableRow = document.createElement("tr");
+    const nameTd = document.createElement("td");
+    const name = document.createTextNode(booking.firstname + " " + booking.surname);
+
+    bookings.appendChild(tableRow);
+    tableRow.appendChild(nameTd);
+    nameTd.appendChild(name);
+
+    const emailTd = document.createElement("td");
+    const email = document.createTextNode(booking.email);
+    tableRow.appendChild(emailTd);
+    emailTd.appendChild(email);
+
+    const messageTd = document.createElement("td");
+    const message = document.createTextNode(booking.message);
+    tableRow.appendChild(messageTd);
+    messageTd.appendChild(message);
+
+    const peopleTd = document.createElement("td");
+    const people = document.createTextNode(booking.people);
+    tableRow.appendChild(peopleTd);
+    peopleTd.appendChild(people);
+
+    const dateTd = document.createElement("td");
+    const date = document.createTextNode(formatedDate);
+    tableRow.appendChild(dateTd);
+    dateTd.appendChild(date);
+
+    const timeTd = document.createElement("td");
+    const time = document.createTextNode(formatedTime);
+    tableRow.appendChild(timeTd);
+    timeTd.appendChild(time);
+
+    const deleteTd = document.createElement("td");
+    const deleteBtn = document.createElement("button");
+    deleteBtn.setAttribute("class", "tableBtn deleteBtn");
+    const deleteNode = document.createTextNode("Avboka");
+    const editBtn = document.createElement("button");
+    editBtn.setAttribute("class", "tableBtn");
+    const editNode = document.createTextNode("Redigera");
+
+    tableRow.appendChild(deleteTd);
+    deleteTd.appendChild(editBtn);
+    editBtn.appendChild(editNode);
+    deleteTd.appendChild(deleteBtn);
+    deleteBtn.appendChild(deleteNode);
+
+    deleteBtn.addEventListener("click", async function() {
+        const id = booking.booking_num;
+        await deleteData(`/bookings/${id}`);
+        allBookings();
+    });
+
+    //Form when editing booking
+    editBtn.addEventListener("click", async function() {
+        messageTd.innerHTML = "";
+        peopleTd.innerHTML = "";
+        dateTd.innerHTML = "";
+        timeTd.innerHTML = "";
+        deleteTd.innerHTML = "";
+
+        const message = document.createElement("textarea");
+        message.value = booking.message;
+        messageTd.appendChild(message);
+
+        const group = document.createElement("input");
+        group.setAttribute("type", "number");
+        group.value = booking.people;
+        peopleTd.appendChild(group);
+
+        const date = document.createElement("input");
+        date.setAttribute("type", "date");
+        date.value = formatedDate;
+        dateTd.appendChild(date);
+
+        const time = document.createElement("input");
+        time.setAttribute("type", "time");
+        time.value = formatedTime 
+        timeTd.appendChild(time);
+
+        const updateBtn = document.createElement("button");
+        updateBtn.setAttribute("class", "tableBtn");
+        const updateNode = document.createTextNode("Uppdatera");
+
+        deleteTd.appendChild(updateBtn);
+        updateBtn.appendChild(updateNode);
+
+        //Confirming edit
+        updateBtn.addEventListener("click", async function() {
+            const bookingID = booking.booking_num;
+
+            const updatedBooking = {
+                message: message.value,
+                people: group.value,
+                booked_date: date.value,
+                booked_time: time.value,
+                confirmed: true
+            }
+
+            await editData(`/bookings/${bookingID}`, updatedBooking);
+            allBookings();
+        });
+    });
+}
+
+//Creating new booking
 async function postBooking(e) {
     e.preventDefault();
 
@@ -463,30 +556,61 @@ async function postBooking(e) {
     }
 }
 
-//Fetching menus and reviews
-async function fetchData(routing) {
-    try {
-        const result = await fetch(`https://projekt-databas.onrender.com/api/menu${routing}`, {
-            method: "GET",
-            headers: {
-                "content-type": "application/json"
-            }
-        });
 
-        if(result.ok) {
-            const data = await result.json();
-            return data;
-        } else {
-            throw error;
+/* Reviews */
+//Creating new review
+async function postReview(e) {
+    e.preventDefault();
+
+    const fname = document.getElementById("firstname").value;
+    const lname = document.getElementById("surname").value;
+    const email = document.getElementById("emailReview").value;
+    const message = document.getElementById("reviewMessage").value.trim();
+    const errorSpan = document.getElementById("errorsReviewForm");
+    const errors = [];
+
+    if(!fname) {
+        errors.push(" förnamn");
+    }
+
+    if(!lname) {
+        errors.push(" efternamn");
+    }
+
+    if(!email) {
+        errors.push(" epost");
+    }
+
+    if(!message) {
+        errors.push(" recension");
+    }
+
+    if(errors.length > 0) {
+        errorSpan.innerHTML = `<p> Ange <strong>${errors}</strong>.</p>`;
+
+    } else {
+        let newReview = {
+            firstname: fname,
+            surname: lname,
+            email: email,
+            message: message
         }
 
-    } catch(error) {
-        console.log(error);
+        await customerInputs("/reviews", newReview);
+
+        document.getElementById("firstname").value = "";
+        document.getElementById("surname").value = "";
+        document.getElementById("emailReview").value = "";
+        document.getElementById("reviewMessage").value = "";
+
+        displayReviews();
+        toggleReviewForm();
     }
 }
 
 //Displaying reviews
 async function displayReviews() {
+    reviewDisplay.innerHTML = "";
 
     const reviews = await fetchData("/reviews");
     let index = 0; 
@@ -496,7 +620,7 @@ async function displayReviews() {
         createReview(reviews[i]);
     }
 
-    //Switching reviews after 5s
+    //Switching reviews after 10s
     const switchReviews = setInterval(function() {
 
         reviewDisplay.innerHTML = "";
@@ -514,7 +638,7 @@ async function displayReviews() {
             indexPlus = 3;
         }
 
-    }, 5000);
+    }, 10000);
 
 }
 
@@ -532,7 +656,21 @@ async function createReview(review) {
     }
 }
 
+//Toggle review form
+function toggleReviewForm() {
+    const reviewForm = document.getElementById("reviewForm");
+    const style = getComputedStyle(reviewForm);
 
+    if(style.display === "none") {
+        reviewForm.style.display = "block";
+        makeReviewBtn.style.display = "none";
+    } else {
+            reviewForm.style.display = "none";
+            makeReviewBtn.style.display = "block";
+    }
+}
+
+/* Menus */
 //Displaying menus
 async function displayMenu() {
 
@@ -607,20 +745,6 @@ async function displayMenu() {
         } 
     }
 
-}
-
-//Toggle review form
-function toggleReviewForm() {
-    const reviewForm = document.getElementById("reviewForm");
-    const style = getComputedStyle(reviewForm);
-
-    if(style.display === "none") {
-        reviewForm.style.display = "block";
-        makeReviewBtn.style.display = "none";
-    } else {
-            reviewForm.style.display = "none";
-            makeReviewBtn.style.display = "block";
-    }
 }
 
 //Toggle menu forms

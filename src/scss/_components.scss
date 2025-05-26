@@ -27,6 +27,21 @@ a:not(.active):hover, #makeReview:hover, #logout {
     text-decoration: underline;
 }
 
+.tableBtn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.deleteBtn {
+    background-color: #c54e3e;
+    color: #fff;
+    border-color: #9e3123;
+}
+
+.deleteBtn:hover {
+    background-color: #9e3123;
+}
+
 //Forms
 form {
     width: 350px;
