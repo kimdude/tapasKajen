@@ -83,3 +83,11 @@ textarea {
 #bookingDetails > div > label:not(:first-of-type) {
     margin-left: 10px;
 }
+
+.unavailable {
+    background-color: base.$primary-color;
+}
+
+.unavailable > td {
+    border-bottom: 1px solid base.$quartinary-color;
+}

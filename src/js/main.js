@@ -5,9 +5,7 @@ const reviewDisplay = document.getElementById("displayReviews");
 const makeReviewBtn = document.getElementById("makeReview");
 const submitBtn = document.getElementById("submitReview");
 const submitBooking = document.getElementById("submitBooking")
-const tapasBtn = document.getElementById("addTapas");
 const tapasForm = document.getElementById("newTapasDiv");
-const submitTapas = document.getElementById("submitTapas");
 const drinkBtn = document.getElementById("addDrink");
 const drinkForm = document.getElementById("newDrinkDiv");
 const submitDrink = document.getElementById("submitDrink");
@@ -31,13 +29,6 @@ if(submitBooking) {
     });
 }
 
-if(tapasBtn) {
-    tapasBtn.addEventListener("click", toggleMenuForm);
-}
-
-if(submitTapas) {
-    submitTapas.addEventListener("click", toggleMenuForm);
-}
 
 if(drinkBtn) {
     drinkBtn.addEventListener("click", toggleMenuForm);
@@ -55,6 +46,9 @@ if(tapasMenu) {
 const loginBtn = document.getElementById("submitLogin");
 const logout = document.getElementById("logout");
 const bookings = document.getElementById("upcomingBookings");
+const tapasTable = document.getElementById("tapasMenuAdmin");
+const editTapasBtn = document.getElementById("addTapas");
+const submitTapas = document.getElementById("submitTapas");
 
 //Adding eventlisteners
 if(loginBtn) {
@@ -72,6 +66,20 @@ if(logout) {
 
 if(bookings) {
     allBookings();
+}
+
+if(tapasTable) {
+    fetchTapas();
+}
+
+if(editTapasBtn) {
+    editTapasBtn.addEventListener("click", toggleMenuForm);
+}
+
+if(submitTapas) {
+    submitTapas.addEventListener("click", function(e) {
+        addTapas(e);
+    });
 }
 
 /* Fetching API:s */
@@ -165,9 +173,33 @@ async function fetchDataAdmin(routing) {
     }
 }
 
+//Adding menu items
+async function addData(routing, object) {
+    const currentToken = localStorage.getItem("userToken");
+
+    try {
+        const result = await fetch(`https://projekt-databas.onrender.com/api${routing}`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                "authorization": "Bearer " + currentToken
+            },
+            body: JSON.stringify(object)
+        });
+
+        if(!result.ok) {
+            throw new Error;
+        }
+
+    } catch(error) {
+        window.location.href = "login.html";
+    }
+}
+
 //Editing bookings and menus
 async function editData(routingAndId, object) {
     const currentToken = localStorage.getItem("userToken");
+    console.log(object)
 
     try {
         const result = await fetch(`https://projekt-databas.onrender.com/api${routingAndId}`, {
@@ -179,11 +211,7 @@ async function editData(routingAndId, object) {
             body: JSON.stringify(object)
         });
 
-        if(result.ok) {
-            const data = await result.json();
-            console.log(data);
-
-        } else {
+        if(!result.ok) {
             throw new Error;
         }
 
@@ -196,13 +224,15 @@ async function editData(routingAndId, object) {
 async function deleteData(routingAndId) {
     const currentToken = localStorage.getItem("userToken");
 
+    console.log("Deleting: ", `https://projekt-databas.onrender.com/api${routingAndId}`)
+
     try {
         const result = await fetch(`https://projekt-databas.onrender.com/api${routingAndId}`, {
             method: "DELETE",
             headers: {
-                "content-type": "application/json",
-                "authorization": "Bearer " + currentToken
-            },
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + currentToken
+            }
         });
 
         if(result.ok) {
@@ -214,7 +244,8 @@ async function deleteData(routingAndId) {
         }
 
     } catch(error) {
-        window.location.href = "login.html";
+        console.log(error)
+        /* window.location.href = "login.html"; */
     }
 }
 
@@ -755,7 +786,7 @@ function toggleMenuForm() {
 
     if(tapasForm) {
         form = tapasForm;
-        button = tapasBtn;
+        button = editTapasBtn;
     } else {
         form = drinkForm;
         button = drinkBtn;
@@ -771,3 +802,198 @@ function toggleMenuForm() {
         button.style.display = "block";
     }
 }
+
+//Fetching tapas menu for admin
+async function fetchTapas() {
+    tapasTable.innerHTML = "";
+    const tapas = await fetchData("/tapasmenu");
+
+    //Sorting tapas by availability
+    const sortedTapas = tapas.sort((a,b) => {
+        return b.availability - a.availability
+    });
+
+    for(let i = 0; i < sortedTapas.length; i++) {
+        const tableRow = document.createElement("tr");
+
+        if(sortedTapas[i].availability === false) {
+            tableRow.setAttribute("class", "unavailable");
+        }
+
+        const nameTd = document.createElement("td");
+        const nameNode = document.createTextNode(sortedTapas[i].name);
+
+        tapasTable.appendChild(tableRow);
+        tableRow.appendChild(nameTd);
+        nameTd.appendChild(nameNode);
+
+        const descrTd = document.createElement("td");
+        const descrNode = document.createTextNode(sortedTapas[i].description);
+        tableRow.appendChild(descrTd);
+        descrTd.appendChild(descrNode);
+
+        const priceTd = document.createElement("td");
+        const priceNode = document.createTextNode(sortedTapas[i].price);
+        tableRow.appendChild(priceTd);
+        priceTd.appendChild(priceNode);
+
+        //Availability options
+        const statusTd = document.createElement("td");
+        const select = document.createElement("select");
+        const availableOption = document.createElement("option");
+        const hideOption = document.createElement("option");
+        const deleteOption = document.createElement("option");
+
+        const available = document.createTextNode("Tillgänglig");
+        const hide = document.createTextNode("Otillgänglig");
+        const deleteNode = document.createTextNode("Ta bort");
+
+        if(sortedTapas[i].availability === true) {
+            availableOption.setAttribute("selected", "selected");
+        } else {
+            hideOption.setAttribute("selected", "selected");
+        }
+
+        tableRow.appendChild(statusTd);
+        statusTd.appendChild(select);
+        select.appendChild(availableOption);
+        availableOption.appendChild(available);
+        select.appendChild(hideOption);
+        hideOption.appendChild(hide);
+        select.appendChild(deleteOption);
+        deleteOption.appendChild(deleteNode);
+
+        //Changing availability
+        select.addEventListener("input", async function(e) {
+            const choice = e.target.value;
+            const tapasID = sortedTapas[i].tapas_code;
+            
+            if(choice === "Otillgänglig") {
+                const updatedTapas = {
+                    name: sortedTapas[i].name,
+                    description: sortedTapas[i].description,
+                    price: sortedTapas[i].price,
+                    availability: false
+                }
+
+                await editData(`/tapasmenu/${tapasID}`, updatedTapas);
+                fetchTapas();
+
+            } else if(choice === "Tillgänglig") {
+                const updatedTapas = {
+                    name: sortedTapas[i].name,
+                    description: sortedTapas[i].description,
+                    price: sortedTapas[i].price,
+                    availability: true
+                }
+
+                await editData(`/tapasmenu/${tapasID}`, updatedTapas);
+                fetchTapas();
+            } else {
+                await deleteData(`/tapasmenu/${tapasID}`);
+                fetchTapas();
+            }
+        });
+
+        //Editing tapas
+        const editTd = document.createElement("td");
+        const editBtn = document.createElement("button");
+        editBtn.setAttribute("class", "tableBtn");
+        const editNode = document.createTextNode("Redigera");
+
+        tableRow.appendChild(editTd);
+        editTd.appendChild(editBtn);
+        editBtn.appendChild(editNode);
+
+        editBtn.addEventListener("click", function() {
+            nameTd.innerHTML = "";
+            descrTd.innerHTML = "";
+            priceTd.innerHTML = "";
+            editTd.innerHTML = "";
+
+            const nameInput = document.createElement("input");
+            nameInput.setAttribute("type", "text");
+            nameInput.value = sortedTapas[i].name;
+            nameTd.appendChild(nameInput);
+
+            const descrInput = document.createElement("input");
+            descrInput.setAttribute("type", "text");
+            descrInput.value = sortedTapas[i].description;
+            descrTd.appendChild(descrInput);
+
+            const priceInput = document.createElement("input");
+            priceInput.setAttribute("type", "number");
+            priceInput.value = sortedTapas[i].price;
+            priceTd.appendChild(priceInput);
+
+            const confirmBtn = document.createElement("button");
+            confirmBtn.setAttribute("class", "tableBtn");
+            const confirmNode = document.createTextNode("Uppdatera");
+
+            editTd.appendChild(confirmBtn);
+            confirmBtn.appendChild(confirmNode);
+            confirmBtn.addEventListener("click", async function() {
+                const tapasID = sortedTapas[i].tapas_code;
+
+                const updatedTapas = {
+                    name: nameInput.value,
+                    description: descrInput.value,
+                    price: priceInput.value,
+                    availability: true
+                }
+
+                await editData(`/tapasmenu/${tapasID}`, updatedTapas);
+                fetchTapas();
+            });
+        });
+    }
+}
+
+//Adding tapas to menu
+async function addTapas(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("tapasName").value;
+    const descr = document.getElementById("tapasDescr").value;
+    const price = document.getElementById("tapasPrice").value;
+    const errorSpan = document.getElementById("tapasErrors");
+    const errors = [];
+
+    if(!name) {
+        errors.push(" namn");
+    }
+
+    if(!descr) {
+        errors.push(" beskrivning");
+    }
+
+    if(!price) {
+        errors.push(" pris");
+    }
+
+    if(errors.length > 0) {
+        errorSpan.innerHTML = `Ange <strong>${errors}</strong>.`;
+
+    } else {
+        //Creating object
+        const newTapas = {
+            name: name,
+            description: descr,
+            price: price
+        }
+
+        //Adding object
+        await addData("/tapasmenu", newTapas);
+
+        //Reseting inputs
+        document.getElementById("tapasName").value = "";
+        document.getElementById("tapasDescr").value = "";
+        document.getElementById("tapasName").value = "";
+
+        fetchTapas();
+        toggleMenuForm();
+    }
+}
+
+//Fetching drink menu admin
+

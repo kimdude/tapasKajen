@@ -31,17 +31,17 @@
     <main>
         <section>
             <h1>Redigera tapasmeny</h1>
-            <table id="tapasMenuAdmin">
+            <table>
                 <thead>
                     <tr>
                         <td>Namn</td>
                         <td>Beskrivning</td>
                         <td>Pris</td>
                         <td>Tillgänglighet</td>
-                        <td>Ta bort</td>
+                        <td>Redigera</td>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tapasMenuAdmin">
 
                 </tbody>
             </table>
@@ -54,7 +54,7 @@
                     <label for="tapasDescr">Beskrivning: </label>
                     <input type="text" name="tapasDescr" id="tapasDescr">
                     <label for="tapasPrice">Pris: </label>
-                    <input type="number" name="tapasPrice" id="tapasPrice">
+                    <input type="number" name="tapasPrice" id="tapasPrice"><br>
                     <span id="tapasErrors"></span>
                     <button id="submitTapas">Lägg till</button>
                 </form>
