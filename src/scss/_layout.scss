@@ -181,7 +181,7 @@ hr {
     margin-top: 0px;
 }
 
-#adminUl > a {
+#adminUl > a, #adminUl > a > li {
     color: base.$primary-color;
     font-size: 1.1rem;
 }
