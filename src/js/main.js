@@ -21,21 +21,26 @@ if(submitBtn) {
     submitBtn.addEventListener("click", function(e) {
         postReview(e);
     });
+
+    //Counting symbols in message
+    const reviewTxt = document.getElementById("reviewMessage");
+    reviewTxt.addEventListener("input", function() {
+        const reviewLimit = document.getElementById("reviewLimit");
+        reviewLimit.innerHTML = `${reviewTxt.value.trim().length}/100`;
+    });
 }
 
 if(submitBooking) {
     submitBooking.addEventListener("click", function(e) {
         postBooking(e);
     });
-}
 
-
-if(drinkBtn) {
-    drinkBtn.addEventListener("click", toggleMenuForm);
-}
-
-if(submitDrink) {
-    submitDrink.addEventListener("click", toggleMenuForm);
+    //Counting symbols in message
+    const message = document.getElementById("bookingMessage");
+    message.addEventListener("input", function() {
+        const messageLimit = document.getElementById("messageLimit");
+        messageLimit.innerHTML = `${message.value.trim().length}/100`;
+    });
 }
 
 if(tapasMenu) {
@@ -49,6 +54,8 @@ const bookings = document.getElementById("upcomingBookings");
 const tapasTable = document.getElementById("tapasMenuAdmin");
 const editTapasBtn = document.getElementById("addTapas");
 const submitTapas = document.getElementById("submitTapas");
+const drinkTable = document.getElementById("drinkTable");
+const submitUser = document.getElementById("submitRegister");
 
 //Adding eventlisteners
 if(loginBtn) {
@@ -57,7 +64,14 @@ if(loginBtn) {
     });
 }
 
+if(submitUser) {
+    submitUser.addEventListener("click", function(e) {
+        register(e);
+    });
+}
+
 if(logout) {
+    //Removing token from localstorage
     logout.addEventListener("click", function() {
         localStorage.clear();
         window.location.href = "/login.html";
@@ -82,7 +96,64 @@ if(submitTapas) {
     });
 }
 
+if(drinkTable) {
+    fetchDrinks();
+}
+
+if(drinkBtn) {
+    drinkBtn.addEventListener("click", toggleMenuForm);
+}
+
+if(submitDrink) {
+    submitDrink.addEventListener("click", addDrinks);
+}
+
 /* Fetching API:s */
+//Registering user
+async function register(e) {
+    e.preventDefault();
+
+    const username = document.getElementById("usernameRegister").value; 
+    const password = document.getElementById("passwordRegister").value; 
+    const errors = document.getElementById("registerErrors"); 
+
+    if(username === "" || password === "") {
+        errors.innerHTML = "Ange <strong>användarnamn</strong> och <strong>lösenord</strong>."
+    } else {
+        //Creating new object with user info
+        let registerUser = {
+            username: username,
+            password: password
+        }
+
+        try {
+            //Adding user to database
+            const result = await fetch("https://projekt-databas.onrender.com/api/register",{
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(registerUser)
+           });
+
+           if(result.ok) {
+            
+            //Confirming and clearing form
+            errors.innerHTML = `<strong>${username}</strong> har lagts till.`;
+            document.getElementById("usernameRegister").value = "";
+            document.getElementById("passwordRegister").value = "";
+
+
+           } else {
+            throw new Error;
+           }
+
+        } catch(error) {
+            errors.innerHTML = "Ett fel har uppstått. Prova igen senare."
+        }
+    }
+}
+
 //Logging in user
 async function login(e) {
     e.preventDefault();
@@ -94,12 +165,14 @@ async function login(e) {
     if(username === "" || password === "") {
         errors.innerHTML = "Ange <strong>användarnamn</strong> och <strong>lösenord</strong>."
     } else {
+        //Creating new object with user info
         let loggedUser = {
             username: username,
             password: password
         }
 
         try {
+            //Fetching user from database
             const result = await fetch("https://projekt-databas.onrender.com/api/login",{
                 method: "POST",
                 headers: {
@@ -111,11 +184,12 @@ async function login(e) {
            if(result.ok) {
             const data = await result.json();
 
+            //Saving token in local storage
             localStorage.setItem("userToken", data.response.token);
             window.location.href = "bookingAdmin.html";
 
            } else {
-            throw error;
+            throw new Error;
            }
 
         } catch(error) {
@@ -135,10 +209,12 @@ async function fetchData(routing) {
         });
 
         if(result.ok) {
+            //Returning fetched data
             const data = await result.json();
             return data;
+
         } else {
-            throw error;
+            throw new Error;
         }
 
     } catch(error) {
@@ -151,6 +227,7 @@ async function fetchDataAdmin(routing) {
     const currentToken = localStorage.getItem("userToken");
 
     try {
+        //Sending login token and fetching data
         const result = await fetch(`https://projekt-databas.onrender.com/api${routing}`, {
             method: "GET",
             headers: {
@@ -160,16 +237,16 @@ async function fetchDataAdmin(routing) {
         });
 
         if(result.ok) {
+            //Returning data
             const data = await result.json();
             return data;
+
         } else {
             throw new Error;
         }
 
     } catch(error) {
-        const errors = document.getElementById("loginErrors");
         window.location.href = "login.html";
-        errors.innerHTML = "Du måste logga in pånytt."
     }
 }
 
@@ -178,6 +255,7 @@ async function addData(routing, object) {
     const currentToken = localStorage.getItem("userToken");
 
     try {
+        //Sending login token and adding menu item to database
         const result = await fetch(`https://projekt-databas.onrender.com/api${routing}`, {
             method: "POST",
             headers: {
@@ -199,9 +277,9 @@ async function addData(routing, object) {
 //Editing bookings and menus
 async function editData(routingAndId, object) {
     const currentToken = localStorage.getItem("userToken");
-    console.log(object)
 
     try {
+        //Sending login token and adding updated menu item to database
         const result = await fetch(`https://projekt-databas.onrender.com/api${routingAndId}`, {
             method: "PUT",
             headers: {
@@ -224,9 +302,8 @@ async function editData(routingAndId, object) {
 async function deleteData(routingAndId) {
     const currentToken = localStorage.getItem("userToken");
 
-    console.log("Deleting: ", `https://projekt-databas.onrender.com/api${routingAndId}`)
-
     try {
+        //Sending token and removing item from database
         const result = await fetch(`https://projekt-databas.onrender.com/api${routingAndId}`, {
             method: "DELETE",
             headers: {
@@ -236,22 +313,21 @@ async function deleteData(routingAndId) {
         });
 
         if(result.ok) {
-            const data = await result.json();
-            console.log(data);
+            await result.json();
 
         } else {
             throw new Error;
         }
 
     } catch(error) {
-        console.log(error)
-        /* window.location.href = "login.html"; */
+        window.location.href = "login.html";
     }
 }
 
 //Receiving reviews and bookings
 async function customerInputs(routing, object) {
     try {
+        //Adding item to database
         const result = await fetch(`https://projekt-databas.onrender.com/api/menu${routing}`, {
             method: "POST",
             headers: {
@@ -261,14 +337,13 @@ async function customerInputs(routing, object) {
         });
 
         if(result.ok) {
-            const data = await result.json();
-            console.log(data)
+            await result.json();
         } else {
-            throw error;
+            throw new Error;
         }
 
     } catch(error) {
-        console.log(error);
+        return "Input limit reached";
     }
 }
 
@@ -391,6 +466,7 @@ function requestedBooking(booking) {
     select.appendChild(denyOption);
     denyOption.appendChild(deny);
 
+    //Confirming or denying booking
     select.addEventListener("input", async function(e) {
         const id = booking.booking_num;
 
@@ -403,11 +479,15 @@ function requestedBooking(booking) {
                 confirmed: true
             }
 
+            //Updating booking
             await editData(`/bookings/${id}`, confirmedBooking);
+            //Reloading tables
             allBookings();
 
         } else {
+            //Deleting booking
             await deleteData(`/bookings/${id}`);
+            //Reloading tables
             allBookings();
         }
     });
@@ -465,6 +545,7 @@ async function confirmedBooking(booking) {
     deleteTd.appendChild(deleteBtn);
     deleteBtn.appendChild(deleteNode);
 
+    //Deleting booking
     deleteBtn.addEventListener("click", async function() {
         const id = booking.booking_num;
         await deleteData(`/bookings/${id}`);
@@ -517,7 +598,9 @@ async function confirmedBooking(booking) {
                 confirmed: true
             }
 
+            //Sending updated booking
             await editData(`/bookings/${bookingID}`, updatedBooking);
+            //Reloading tables
             allBookings();
         });
     });
@@ -537,6 +620,8 @@ async function postBooking(e) {
     const errorSpan = document.getElementById("errorsBookingForm");
     const errors = [];
 
+
+    //Creating error messages
     if(!fname) {
         errors.push(" förnamn");
     }
@@ -565,6 +650,7 @@ async function postBooking(e) {
         errorSpan.innerHTML = `<p> Ange <strong>${errors}</strong>.</p>`;
 
     } else {
+        //Object with booking
         let newBooking = {
             firstname: fname,
             surname: lname,
@@ -575,7 +661,16 @@ async function postBooking(e) {
             message: message
         }
 
-        customerInputs("/bookings", newBooking);
+        //Sending new booking
+        const result = await customerInputs("/bookings", newBooking);
+
+        //If message is too long
+        if(result === "Input limit reached") {
+            errorSpan.innerHTML = `<p>Meddelande får vara max <strong>100 tecken</strong> långt.</p>`;
+            return;
+        }
+
+        errorSpan.innerHTML = `<p>Tack för din bokning! Vi skickar snart en bokningsbekräftelse till <strong>${email}</strong></p>`;
 
         document.getElementById("firstnameBooking").value = "";
         document.getElementById("surnameBooking").value = "";
@@ -584,6 +679,7 @@ async function postBooking(e) {
         document.getElementById("time").value = "";
         document.getElementById("group").value = "";
         document.getElementById("bookingMessage").value = "";
+
     }
 }
 
@@ -600,6 +696,7 @@ async function postReview(e) {
     const errorSpan = document.getElementById("errorsReviewForm");
     const errors = [];
 
+    //Error messages
     if(!fname) {
         errors.push(" förnamn");
     }
@@ -620,6 +717,7 @@ async function postReview(e) {
         errorSpan.innerHTML = `<p> Ange <strong>${errors}</strong>.</p>`;
 
     } else {
+        //Object with review
         let newReview = {
             firstname: fname,
             surname: lname,
@@ -627,23 +725,32 @@ async function postReview(e) {
             message: message
         }
 
-        await customerInputs("/reviews", newReview);
+        //Sending new review
+        const result = await customerInputs("/reviews", newReview);
+        if(result === "Input limit reached") {
+            errorSpan.innerHTML = `<p> Recensionen får vara max <strong>100 tecken</strong> långt.</p>`;
+            return;
+        }
 
         document.getElementById("firstname").value = "";
         document.getElementById("surname").value = "";
         document.getElementById("emailReview").value = "";
         document.getElementById("reviewMessage").value = "";
 
+        //Reloading reviews
         displayReviews();
+        //Hiding form
         toggleReviewForm();
     }
 }
 
 //Displaying reviews
 async function displayReviews() {
-    reviewDisplay.innerHTML = "";
 
+    reviewDisplay.innerHTML = "";
     const reviews = await fetchData("/reviews");
+
+    //Parting reviews in sections of 3
     let index = 0; 
     let indexPlus = 3; 
 
@@ -652,7 +759,7 @@ async function displayReviews() {
     }
 
     //Switching reviews after 10s
-    const switchReviews = setInterval(function() {
+    setInterval(function() {
 
         reviewDisplay.innerHTML = "";
 
@@ -710,6 +817,7 @@ async function displayMenu() {
 
     for(let i=0; i< tapas.length; i++) {
 
+        //Only available tapas
         if(tapas[i].availability === true) {
             const articleEl = document.createElement("article");
             const tapasInfo = document.createElement("div");
@@ -746,7 +854,8 @@ async function displayMenu() {
 
     for(let i=0; i< drinks.length; i++) {
 
-        if(tapas[i].availability === true) {
+        //Only available drinks
+        if(drinks[i].availability === true) {
             const articleEl = document.createElement("article");
             const drinkInfo = document.createElement("div");
 
@@ -775,7 +884,6 @@ async function displayMenu() {
             descriptionContainer.appendChild(description);
         } 
     }
-
 }
 
 //Toggle menu forms
@@ -816,6 +924,7 @@ async function fetchTapas() {
     for(let i = 0; i < sortedTapas.length; i++) {
         const tableRow = document.createElement("tr");
 
+        //Styling for unavailable tapas
         if(sortedTapas[i].availability === false) {
             tableRow.setAttribute("class", "unavailable");
         }
@@ -848,6 +957,7 @@ async function fetchTapas() {
         const hide = document.createTextNode("Otillgänglig");
         const deleteNode = document.createTextNode("Ta bort");
 
+        //Setting default select option
         if(sortedTapas[i].availability === true) {
             availableOption.setAttribute("selected", "selected");
         } else {
@@ -869,6 +979,7 @@ async function fetchTapas() {
             const tapasID = sortedTapas[i].tapas_code;
             
             if(choice === "Otillgänglig") {
+                //Creating object with updated availability
                 const updatedTapas = {
                     name: sortedTapas[i].name,
                     description: sortedTapas[i].description,
@@ -876,10 +987,12 @@ async function fetchTapas() {
                     availability: false
                 }
 
+                //Sending updated tapas
                 await editData(`/tapasmenu/${tapasID}`, updatedTapas);
                 fetchTapas();
 
             } else if(choice === "Tillgänglig") {
+                //Creating object with updated availability
                 const updatedTapas = {
                     name: sortedTapas[i].name,
                     description: sortedTapas[i].description,
@@ -887,9 +1000,11 @@ async function fetchTapas() {
                     availability: true
                 }
 
+                //Sending updated tapas
                 await editData(`/tapasmenu/${tapasID}`, updatedTapas);
                 fetchTapas();
             } else {
+                //Deleting tapas
                 await deleteData(`/tapasmenu/${tapasID}`);
                 fetchTapas();
             }
@@ -935,6 +1050,7 @@ async function fetchTapas() {
             confirmBtn.addEventListener("click", async function() {
                 const tapasID = sortedTapas[i].tapas_code;
 
+                //Object with updated tapas
                 const updatedTapas = {
                     name: nameInput.value,
                     description: descrInput.value,
@@ -942,6 +1058,7 @@ async function fetchTapas() {
                     availability: true
                 }
 
+                //Sending updated tapas
                 await editData(`/tapasmenu/${tapasID}`, updatedTapas);
                 fetchTapas();
             });
@@ -959,6 +1076,210 @@ async function addTapas(e) {
     const errorSpan = document.getElementById("tapasErrors");
     const errors = [];
 
+    //Error messages
+    if(!name) {
+        errors.push(" namn");
+    }
+
+    if(!descr) {
+        errors.push(" beskrivning");
+    }
+
+    if(!price) {
+        errors.push(" pris");
+    }
+
+    if(errors.length > 0) {
+        errorSpan.innerHTML = `Ange <strong>${errors}</strong>.`;
+
+    } else {
+        //Oobject with new tapas
+        const newTapas = {
+            name: name,
+            description: descr,
+            price: price
+        }
+
+        //Sending tapas
+        await addData("/tapasmenu", newTapas);
+
+        //Reseting inputs
+        document.getElementById("tapasName").value = "";
+        document.getElementById("tapasDescr").value = "";
+        document.getElementById("tapasPrice").value = "";
+
+        fetchTapas();
+        toggleMenuForm();
+    }
+}
+
+//Fetching drinks menu for admin
+async function fetchDrinks() {
+    drinkTable.innerHTML = "";
+    const drinks = await fetchData("/drinkmenu");
+
+    //Sorting drinks by availability
+    const sortedDrinks = drinks.sort((a,b) => {
+        return b.availability - a.availability
+    });
+
+    for(let i = 0; i < sortedDrinks.length; i++) {
+        const tableRow = document.createElement("tr");
+
+        //Styling unavailable drinks
+        if(sortedDrinks[i].availability === false) {
+            tableRow.setAttribute("class", "unavailable");
+        }
+
+        const nameTd = document.createElement("td");
+        const nameNode = document.createTextNode(sortedDrinks[i].name);
+
+        drinkTable.appendChild(tableRow);
+        tableRow.appendChild(nameTd);
+        nameTd.appendChild(nameNode);
+
+        const descrTd = document.createElement("td");
+        const descrNode = document.createTextNode(sortedDrinks[i].description);
+        tableRow.appendChild(descrTd);
+        descrTd.appendChild(descrNode);
+
+        const priceTd = document.createElement("td");
+        const priceNode = document.createTextNode(sortedDrinks[i].price);
+        tableRow.appendChild(priceTd);
+        priceTd.appendChild(priceNode);
+
+        //Availability options
+        const statusTd = document.createElement("td");
+        const select = document.createElement("select");
+        const availableOption = document.createElement("option");
+        const hideOption = document.createElement("option");
+        const deleteOption = document.createElement("option");
+
+        const available = document.createTextNode("Tillgänglig");
+        const hide = document.createTextNode("Otillgänglig");
+        const deleteNode = document.createTextNode("Ta bort");
+
+        //Setting default select option
+        if(sortedDrinks[i].availability === true) {
+            availableOption.setAttribute("selected", "selected");
+        } else {
+            hideOption.setAttribute("selected", "selected");
+        }
+
+        tableRow.appendChild(statusTd);
+        statusTd.appendChild(select);
+        select.appendChild(availableOption);
+        availableOption.appendChild(available);
+        select.appendChild(hideOption);
+        hideOption.appendChild(hide);
+        select.appendChild(deleteOption);
+        deleteOption.appendChild(deleteNode);
+
+        //Changing availability
+        select.addEventListener("input", async function(e) {
+            const choice = e.target.value;
+            const drinkID = sortedDrinks[i].drink_code;
+            
+            if(choice === "Otillgänglig") {
+                //Object with updated drink
+                const updatedDrinks = {
+                    name: sortedDrinks[i].name,
+                    description: sortedDrinks[i].description,
+                    price: sortedDrinks[i].price,
+                    availability: false
+                }
+
+                //Sending updated drink
+                await editData(`/drinkmenu/${drinkID}`, updatedDrinks);
+                fetchDrinks();
+
+            } else if(choice === "Tillgänglig") {
+                //Object with updated drink
+                const updatedDrinks = {
+                    name: sortedDrinks[i].name,
+                    description: sortedDrinks[i].description,
+                    price: sortedDrinks[i].price,
+                    availability: true
+                }
+
+                //Sending updated drink
+                await editData(`/drinkmenu/${drinkID}`, updatedDrinks);
+                fetchDrinks();
+
+            } else {
+                //Deleting drink
+                await deleteData(`/drinkmenu/${drinkID}`);
+                fetchDrinks();
+            }
+        });
+
+        //Editing drinks
+        const editTd = document.createElement("td");
+        const editBtn = document.createElement("button");
+        editBtn.setAttribute("class", "tableBtn");
+        const editNode = document.createTextNode("Redigera");
+
+        tableRow.appendChild(editTd);
+        editTd.appendChild(editBtn);
+        editBtn.appendChild(editNode);
+
+        editBtn.addEventListener("click", function() {
+            nameTd.innerHTML = "";
+            descrTd.innerHTML = "";
+            priceTd.innerHTML = "";
+            editTd.innerHTML = "";
+
+            const nameInput = document.createElement("input");
+            nameInput.setAttribute("type", "text");
+            nameInput.value = sortedDrinks[i].name;
+            nameTd.appendChild(nameInput);
+
+            const descrInput = document.createElement("input");
+            descrInput.setAttribute("type", "text");
+            descrInput.value = sortedDrinks[i].description;
+            descrTd.appendChild(descrInput);
+
+            const priceInput = document.createElement("input");
+            priceInput.setAttribute("type", "number");
+            priceInput.value = sortedDrinks[i].price;
+            priceTd.appendChild(priceInput);
+
+            const confirmBtn = document.createElement("button");
+            confirmBtn.setAttribute("class", "tableBtn");
+            const confirmNode = document.createTextNode("Uppdatera");
+
+            editTd.appendChild(confirmBtn);
+            confirmBtn.appendChild(confirmNode);
+            confirmBtn.addEventListener("click", async function() {
+                const drinkID = sortedDrinks[i].drink_code;
+ 
+                //Object with updated drink
+                const updatedDrinks = {
+                    name: nameInput.value,
+                    description: descrInput.value,
+                    price: priceInput.value,
+                    availability: true
+                }
+
+                //Sending updated drink
+                await editData(`/drinkmenu/${drinkID}`, updatedDrinks);
+                fetchDrinks();
+            });
+        });
+    }
+}
+
+//Adding drinks to menu
+async function addDrinks(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("drinkName").value;
+    const descr = document.getElementById("drinkDescr").value;
+    const price = document.getElementById("drinkPrice").value;
+    const errorSpan = document.getElementById("drinkErrors");
+    const errors = [];
+
+    //Error messages
     if(!name) {
         errors.push(" namn");
     }
@@ -976,24 +1297,21 @@ async function addTapas(e) {
 
     } else {
         //Creating object
-        const newTapas = {
+        const newDrink = {
             name: name,
             description: descr,
             price: price
         }
 
         //Adding object
-        await addData("/tapasmenu", newTapas);
+        await addData("/drinkmenu", newDrink);
 
         //Reseting inputs
-        document.getElementById("tapasName").value = "";
-        document.getElementById("tapasDescr").value = "";
-        document.getElementById("tapasName").value = "";
+        document.getElementById("drinkName").value = "";
+        document.getElementById("drinkDescr").value = "";
+        document.getElementById("drinkPrice").value = "";
 
-        fetchTapas();
+        fetchDrinks();
         toggleMenuForm();
     }
 }
-
-//Fetching drink menu admin
-

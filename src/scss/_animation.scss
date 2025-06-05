@@ -1,0 +1,27 @@
+//Animation on reviews
+.reviewArticle:first-of-type {
+    animation-name: showReview;
+    animation-duration: 10s;
+    animation-fill-mode: both;
+}
+
+.reviewArticle:nth-of-type(2){
+    animation-name: showReview;
+    animation-delay: 0.25s;
+    animation-duration: 10s;
+    animation-fill-mode: both;
+}
+
+.reviewArticle:last-of-type{
+    animation-name: showReview;
+    animation-delay: 0.5s;
+    animation-duration: 10s;
+    animation-fill-mode: both;
+}
+
+@keyframes showReview {
+    0% { transform:translateY(100%); }
+    20% { transform:translateY(0%); }
+    80% { transform:translateY(0%); }
+    100% { transform:translateY(100%); }
+}

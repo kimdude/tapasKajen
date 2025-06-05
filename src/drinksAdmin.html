@@ -31,7 +31,7 @@
     <main>
         <section>
             <h1>Redigera drinkmeny</h1>
-            <table id="drinkMenuAdmin">
+            <table>
                 <thead>
                     <tr>
                         <td>Namn</td>
@@ -41,7 +41,7 @@
                         <td>Redigera</td>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="drinkTable">
 
                 </tbody>
             </table>
@@ -54,7 +54,7 @@
                     <label for="drinkDescr">Beskrivning: </label>
                     <input type="text" name="drinkDescr" id="drinkDescr">
                     <label for="drinkPrice">Pris: </label>
-                    <input type="number" name="drinkPrice" id="drinkPrice">
+                    <input type="number" name="drinkPrice" id="drinkPrice"><br>
                     <span id="drinkErrors"></span>
                     <button id="submitDrink">Lägg till</button>
                 </form>
