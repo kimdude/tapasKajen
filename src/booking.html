@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
     <link rel="stylesheet" href="scss/main.scss">
-    <title>Tapas kajen</title>
+    <title>Boka bord</title>
     <script type="module" src="js/main.js" defer></script>
 </head>
 <body>
@@ -20,6 +20,7 @@
         </nav>
     </header>
     <main>
+        <!-- Section with booking form -->
         <section>
             <h1>Boka bord</h1>
             <form>
@@ -43,6 +44,7 @@
                 <label for="bookingMessage">Meddelande: </label>
                 <textarea rows="5" name="bookingMessage" id="bookingMessage">
                 </textarea>
+                <!-- Symbol cound and span for errors -->
                 <small id="messageLimit"></small>
                 <span id="errorsBookingForm"></span>
                 <button id="submitBooking">Boka</button>

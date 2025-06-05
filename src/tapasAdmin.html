@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
     <link rel="stylesheet" href="scss/main.scss">
-    <title>Tapas kajen</title>
+    <title>Lägg till tapas</title>
     <script type="module" src="js/checkAuth.js"></script>
     <script type="module" src="js/main.js" defer></script>
 </head>
@@ -29,6 +29,7 @@
         </ul>
     </nav>
     <main>
+        <!-- Section with table of tapas -->
         <section>
             <h1>Redigera tapasmeny</h1>
             <table>
@@ -42,12 +43,12 @@
                     </tr>
                 </thead>
                 <tbody id="tapasMenuAdmin">
-
                 </tbody>
             </table>
             <button id="addTapas">Lägg till ny</button>
             <div id="newTapasDiv">
                 <h2>Lägg till ny</h2>
+                <!-- Form to add new tapas -->
                 <form>
                     <label for="tapasName">Namn: </label>
                     <input type="text" name="tapasName" id="tapasName">

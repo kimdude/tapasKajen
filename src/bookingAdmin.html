@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="images/logotyp_mörk.svg">
     <link rel="stylesheet" href="scss/main.scss">
-    <title>Tapas kajen</title>
+    <title>Bokningar</title>
     <script type="module" src="js/checkAuth.js"></script>
     <script type="module" src="js/main.js" defer></script>
 </head>
@@ -29,7 +29,9 @@
         </ul>
     </nav>
     <main>
+        <!-- Section with bookings -->
         <section>
+            <!-- Table with confirmed upcoming bookings -->
             <h1>Bokningar</h1>
             <table>
                 <thead>
@@ -43,10 +45,10 @@
                         <td>Redigera</td>
                     </tr>
                 </thead>
-                <tbody id="upcomingBookings">
-                    
+                <tbody id="upcomingBookings">   
                 </tbody>
             </table>
+            <!-- Table with requested bookings -->
             <h2>Obekräftade</h2>
             <table>
                 <thead>
@@ -61,7 +63,6 @@
                     </tr>
                 </thead>
                 <tbody id="otherBookings">
-
                 </tbody>
             </table>
         </section>
