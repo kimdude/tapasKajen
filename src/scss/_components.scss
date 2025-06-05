@@ -91,3 +91,21 @@ textarea {
 .unavailable > td {
     border-bottom: 1px solid base.$quartinary-color;
 }
+
+//Lightmode
+@media (prefers-color-scheme: light) {
+    //Links
+    a { color: base.$primary-color; }
+
+    //Buttons
+    button { background-color: base.$quartinary-color; color: #fff; border: 1px solid #1b3146; }
+    button:hover { background-color: #1f3952; }
+
+    //Tables
+    .unavailable { background-color: base.$tertiary-color; }
+    
+    //Forms
+    form { box-shadow: 0 0 10 rgba(138, 114, 100, 0.9); }
+
+
+}

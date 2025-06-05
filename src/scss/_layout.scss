@@ -36,7 +36,10 @@ header {
     background-color: rgba(31, 51, 69, 0.9);
 }
 
-#logo {
+.bigLogo {
+    background-image: url("../images/logotyp_ljus.svg");
+    height: 120px;
+    width: 130px;
     display: block;
     justify-self: center;
 }
@@ -226,4 +229,30 @@ footer > div > p {
     margin-left: auto;
     margin-top: auto;
     margin-bottom: 10px;
+}
+
+//Lightmode
+@media (prefers-color-scheme: light) {
+    //General
+    body { background-color: base.$secondary-color; color: base.$primary-color; }
+    h1 { color: base.$primary-color; }
+    footer { background-color: base.$tertiary-color; color: base.$primary-color; }
+
+    //Header
+    #introHeader { background-color: rgba(230, 200, 183, 0.8); }
+    header { background-color: base.$tertiary-color; box-shadow: 2 2 10 rgba(138, 114, 100, 0.9); }
+    .bigLogo { background-image: url("../images/logotyp_mörk.svg"); }
+
+    //Home page
+    .reviewArticle { background-color: base.$tertiary-color;background-image: url("../images/citat_mörk.svg"); box-shadow: 2 2 10 rgba(138, 114, 100, 0.9); }
+
+    //Menu page
+    .menuFrame { border: 1px solid base.$quartinary-color; }
+    .menuHeader { color: base.$quartinary-color !important; background-color: base.$secondary-color; }
+
+    //Admin pages
+    #adminNav { background-color: base.$primary-color; box-shadow: 2 2 10 rgba(138, 114, 100, 0.9); }
+    #adminUl > li > a { color: base.$secondary-color; }
+    thead { color: base.$tertiary-color; background-color: base.$quartinary-color; }
+    td { border-bottom: 1px solid base.$quartinary-color; }
 }
