@@ -176,3 +176,9 @@ textarea {
     nav:not(#adminNav) { width: 30%; margin-left: auto; }
     nav > ul:not(#adminUl) { display: none; position: absolute; right: 20; padding: 20px 10px; background-color: base.$primary-color; }
 }
+
+//Screens under 460px
+@media screen and (max-width: 460px) {
+    form { width: 250px; }
+    label { display: block; }
+}
