@@ -12,13 +12,22 @@
     <!-- Intro banner with main navigation -->
     <header>
         <a href="index.html" class="bigLogo"></a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Hem</a></li>
-                <li><a href="menu.html">Meny</a></li>
-                <li><a href="booking.html" class="active">Bokning</a></li>
-            </ul>
-        </nav>
+            <nav>
+                <button id="openNav" class="navBtn">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+                <ul id="mainNav">
+                    <li><a href="index.html">Hem</a></li>
+                    <li><a href="menu.html">Meny</a></li>
+                    <li><a href="booking.html" class="active">Bokning</a></li>
+                    <button id="closeNav" class="navBtn">
+                        <span class="line line1"></span>
+                        <span class="line line2"></span>
+                    </button>
+                </ul>
+            </nav>
     </header>
     <main>
         <!-- Section with booking form -->

@@ -13,49 +13,63 @@
     <!-- Intro banner with main navigation -->
     <header>
         <a href="index.html" class="bigLogo"></a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Hem</a></li>
-                <li><a href="menu.html">Meny</a></li>
-                <li><a href="booking.html">Bokning</a></li>
-            </ul>
-        </nav>
+            <nav>
+                <button id="openNav" class="navBtn">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+                <ul id="mainNav">
+                    <li><a href="index.html">Hem</a></li>
+                    <li><a href="menu.html">Meny</a></li>
+                    <li><a href="booking.html">Bokning</a></li>
+                    <button id="closeNav" class="navBtn">
+                        <span class="line line1"></span>
+                        <span class="line line2"></span>
+                    </button>
+                </ul>
+            </nav>
     </header>
     <nav id="adminNav">
         <ul id="adminUl">
-            <li><a href="bookingAdmin.html">Bokningar ►</a></li>
-            <li><a href="tapasAdmin.html">Redigera tapasmeny ►</a></li>
-            <li><a href="drinksAdmin.html" class="active">Redigera drinkmeny ►</a></li>
-            <li><a href="users.html">Lägg till användare ►</a></li>
+            <li><a href="bookingAdmin.html">Bokningar</a></li>
+            <li><a href="tapasAdmin.html">Redigera tapasmeny</a></li>
+            <li><a href="drinksAdmin.html" class="active">Redigera drinkmeny</a></li>
+            <li><a href="users.html">Lägg till användare</a></li>
         </ul>
+        <button id="openAdminNav" class="navBtn">
+            <span class="arrow" id="arrow1"></span>
+            <span class="arrow" id="arrow2"></span>
+        </button>
     </nav>
     <main>
         <!-- Section with table of drinks -->
         <section>
             <h1>Redigera drinkmeny</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Namn</td>
-                        <td>Beskrivning</td>
-                        <td>Pris</td>
-                        <td>Tillgänglighet</td>
-                        <td>Redigera</td>
-                    </tr>
-                </thead>
-                <tbody id="drinkTable">
-
-                </tbody>
-            </table>
+            <div class="responsiveTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Namn</td>
+                            <td>Beskrivning</td>
+                            <td>Pris</td>
+                            <td>Tillgänglighet</td>
+                            <td>Redigera</td>
+                        </tr>
+                    </thead>
+                    <tbody id="drinkTable">
+                    </tbody>
+                </table>
+            </div>
             <button id="addDrink">Lägg till ny</button>
             <!-- Form to add drink -->
             <div id="newDrinkDiv">
                 <h2>Lägg till ny</h2>
                 <form>
                     <label for="drinkName">Namn: </label>
-                    <input type="text" name="drinkName" id="drinkName">
+                    <input type="text" name="drinkName" id="drinkName"><br>
                     <label for="drinkDescr">Beskrivning: </label>
-                    <input type="text" name="drinkDescr" id="drinkDescr">
+                    <input type="text" name="drinkDescr" id="drinkDescr"><br>
                     <label for="drinkPrice">Pris: </label>
                     <input type="number" name="drinkPrice" id="drinkPrice"><br>
                     <span id="drinkErrors"></span>

@@ -17,13 +17,66 @@ button:hover {
     background-color: #c99f86;
 }
 
+.navBtn {
+    background-color: transparent;
+    border: none;
+}
+
+.navBtn:hover {
+    background-color: transparent;
+}
+
+.line {
+    display: block;
+    height: 2.5px;
+    width: 22px;
+    margin: 7px 0px;
+    background-color: base.$secondary-color;
+}
+
+.line1 {
+    transform: rotate(40deg);
+}
+
+.line2 {
+    transform: rotate(-40deg);
+    margin-top: -9px;
+}
+
+#openNav, #closeNav {
+    margin-right: 10px;
+    display: none;
+}
+
+#openAdminNav {
+    display: none;
+}
+
+.arrow {
+    display: block;
+    height: 2.5px;
+    width: 15px;
+    margin: 7px 0px;
+    background-color: base.$primary-color;
+}
+
+#arrow1 {
+    transform: rotate(40deg);
+}
+
+#arrow2 {
+    transform: rotate(-40deg);
+    margin-left: 9.5px;
+    margin-top: -9.5px;
+}
+
 //Links
 a {
     color: base.$secondary-color;
     text-decoration: none;
 }
 
-a:not(.active):hover, #makeReview:hover, #logout {
+a:not(.active):hover, #makeReview:hover, #logout:hover {
     text-decoration: underline;
 }
 
@@ -47,7 +100,7 @@ form {
     width: 350px;
     justify-self: center;
     margin-bottom: 80px;
-    padding: 20px 2%;
+    padding: 20px 20px;
     border-radius: 5px;
     box-shadow: 0 0 10 rgba(39, 39, 39, 0.7);
     background-color: base.$secondary-color;
@@ -60,7 +113,7 @@ label {
 }
 
 input {
-    width: 70%;
+    width: 65%;
     margin: 10px 0px;
     padding: 5px 10px;
     border: 1px solid #a38573;
@@ -77,7 +130,7 @@ textarea {
 }
 
 #bookingDetails > input, #bookingDetails > div > input {
-    width: 35%;
+    width: 100px;
 }
 
 #bookingDetails > div > label:not(:first-of-type) {
@@ -100,12 +153,26 @@ textarea {
     //Buttons
     button { background-color: base.$quartinary-color; color: #fff; border: 1px solid #1b3146; }
     button:hover { background-color: #1f3952; }
+    .line { background-color: base.$primary-color; }
 
     //Tables
     .unavailable { background-color: base.$tertiary-color; }
     
     //Forms
     form { box-shadow: 0 0 10 rgba(138, 114, 100, 0.9); }
+}
 
+//Screens under 800px
+@media screen and (max-width: 800px) {
+    //Admin navigation
+    #openAdminNav { display: block; }
+    #adminNav { margin-top: -30px; }
+    #adminUl { display: none; }
+}
 
+//Screens under 640px
+@media screen and (max-width: 640px) {
+    #openNav, #closeNav { display: block; }
+    nav:not(#adminNav) { width: 30%; margin-left: auto; }
+    nav > ul:not(#adminUl) { display: none; position: absolute; right: 20; padding: 20px 10px; background-color: base.$primary-color; }
 }

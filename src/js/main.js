@@ -10,6 +10,9 @@ const drinkBtn = document.getElementById("addDrink");
 const drinkForm = document.getElementById("newDrinkDiv");
 const submitDrink = document.getElementById("submitDrink");
 const tapasMenu = document.getElementById("tapasMenu");
+const openNav = document.getElementById("openNav");
+const closeNav = document.getElementById("closeNav");
+const adminNavBtn = document.getElementById("openAdminNav");
 
 //Adding eventlisteners
 if(makeReviewBtn) {
@@ -45,6 +48,18 @@ if(submitBooking) {
 
 if(tapasMenu) {
     displayMenu();
+}
+
+if(openNav) {
+    openNav.addEventListener("click", toggleNav);
+}
+
+if(closeNav) {
+    closeNav.addEventListener("click", toggleNav);
+}
+
+if(adminNavBtn) {
+    adminNavBtn.addEventListener("click", toggleAdmin);
 }
 
 //Fetching variables connected to admins
@@ -106,6 +121,46 @@ if(drinkBtn) {
 
 if(submitDrink) {
     submitDrink.addEventListener("click", addDrinks);
+}
+
+//Toggle main navigation
+function toggleNav() {
+    const nav = document.getElementById("mainNav");
+    const style = getComputedStyle(nav);
+
+    if(style.display === "none") {
+        nav.style.display = "block";
+
+    } else {
+
+        nav.style.display = "none";
+    }
+}
+
+//Toggle admin navigation
+function toggleAdmin() {
+    const adminNav = document.getElementById("adminNav");
+    const arrowHalfOne = document.getElementById("arrow1");
+    const arrowHalfTwo = document.getElementById("arrow2");
+    const navOptions = document.getElementById("adminUl");
+    const style = getComputedStyle(navOptions);
+
+    if(style.display === "none") {
+        navOptions.style.display = "block";
+        adminNav.style.marginTop = "0px";
+
+        //Rotating arrow button
+        arrowHalfOne.style.transform = "rotate(-40deg)";
+        arrowHalfTwo.style.transform = "rotate(40deg)";
+        
+    } else {
+        navOptions.style.display = "none";
+        adminNav.style.marginTop = "-30px";
+
+        //Rotating arrow button
+        arrowHalfOne.style.transform = "rotate(40deg)";
+        arrowHalfTwo.style.transform = "rotate(-40deg)";
+    }
 }
 
 /* Fetching API:s */
@@ -1315,3 +1370,4 @@ async function addDrinks(e) {
         toggleMenuForm();
     }
 }
+

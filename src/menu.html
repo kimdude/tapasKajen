@@ -12,28 +12,37 @@
     <!-- Intro banner with main navigation -->
     <header>
         <a href="index.html" class="bigLogo"></a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Hem</a></li>
-                <li><a href="menu.html" class="active">Meny</a></li>
-                <li><a href="booking.html">Bokning</a></li>
-            </ul>
-        </nav>
+            <nav>
+                <button id="openNav" class="navBtn">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+                <ul id="mainNav">
+                    <li><a href="index.html">Hem</a></li>
+                    <li><a href="menu.html" class="active">Meny</a></li>
+                    <li><a href="booking.html">Bokning</a></li>
+                    <button id="closeNav" class="navBtn">
+                        <span class="line line1"></span>
+                        <span class="line line2"></span>
+                    </button>
+                </ul>
+            </nav>
     </header>
     <main id="menuMain">
         <!-- Div with sidebar of images -->
         <div id="gallery">
             <picture>
                 <source srcset="images/tapas_tre.jpg?as=webp" type="image/webp" />
-                <img src="images/tapas_tre.jpg" width=320 alt="Tapasmacka med krossad avokado och ett rinnande ägg på.">
+                <img src="images/tapas_tre.jpg" alt="Tapasmacka med krossad avokado och ett rinnande ägg på.">
             </picture>
             <picture>
                 <source srcset="images/tapas.jpg?as=webp" type="image/webp" />
-                <img src="images/tapas.jpg" width=320 alt="Olika tapasrätter placerade bland grönsaker och vinflaskor.">
+                <img src="images/tapas.jpg" alt="Olika tapasrätter placerade bland grönsaker och vinflaskor.">
             </picture>
             <picture>
                 <source srcset="images/tapas_tva.jpg?as=webp" type="image/webp" />
-                <img src="images/tapas_tva.jpg" width=320 alt="Soppa med koriander, citron och chili.">
+                <img src="images/tapas_tva.jpg" alt="Soppa med koriander, citron och chili.">
             </picture>
         </div>
         <!-- Section with menus -->

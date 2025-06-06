@@ -13,39 +13,54 @@
     <!-- Intro banner with main navigation -->
     <header>
         <a href="index.html" class="bigLogo"></a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Hem</a></li>
-                <li><a href="menu.html">Meny</a></li>
-                <li><a href="booking.html">Bokning</a></li>
-            </ul>
-        </nav>
+            <nav>
+                <button id="openNav" class="navBtn">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+                <ul id="mainNav">
+                    <li><a href="index.html">Hem</a></li>
+                    <li><a href="menu.html">Meny</a></li>
+                    <li><a href="booking.html">Bokning</a></li>
+                    <button id="closeNav" class="navBtn">
+                        <span class="line line1"></span>
+                        <span class="line line2"></span>
+                    </button>
+                </ul>
+            </nav>
     </header>
     <nav id="adminNav">
         <ul id="adminUl">
-            <li><a href="bookingAdmin.html">Bokningar ►</a></li>
-            <li><a href="tapasAdmin.html" class="active">Redigera tapasmeny ►</a></li>
-            <li><a href="drinksAdmin.html">Redigera drinkmeny ►</a></li>
-            <li><a href="users.html">Lägg till användare ►</a></li>
+            <li><a href="bookingAdmin.html">Bokningar</a></li>
+            <li><a href="tapasAdmin.html" class="active">Redigera tapasmeny</a></li>
+            <li><a href="drinksAdmin.html">Redigera drinkmeny</a></li>
+            <li><a href="users.html">Lägg till användare</a></li>
         </ul>
+        <button id="openAdminNav" class="navBtn">
+            <span class="arrow" id="arrow1"></span>
+            <span class="arrow" id="arrow2"></span>
+        </button>
     </nav>
     <main>
         <!-- Section with table of tapas -->
         <section>
             <h1>Redigera tapasmeny</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Namn</td>
-                        <td>Beskrivning</td>
-                        <td>Pris</td>
-                        <td>Tillgänglighet</td>
-                        <td>Redigera</td>
-                    </tr>
-                </thead>
-                <tbody id="tapasMenuAdmin">
-                </tbody>
-            </table>
+            <div class="responsiveTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Namn</td>
+                            <td>Beskrivning</td>
+                            <td>Pris</td>
+                            <td>Tillgänglighet</td>
+                            <td>Redigera</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tapasMenuAdmin">
+                    </tbody>
+                </table>
+            </div>
             <button id="addTapas">Lägg till ny</button>
             <div id="newTapasDiv">
                 <h2>Lägg till ny</h2>

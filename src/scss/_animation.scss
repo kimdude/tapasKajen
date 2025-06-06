@@ -25,3 +25,13 @@
     80% { transform:translateY(0%); }
     100% { transform:translateY(100%); }
 }
+
+//Screens under 640px
+@media screen and (max-width: 640px) {
+    @keyframes showReview {
+        0% { transform:translateX(-100%); }
+        20% { transform:translateX(10%); }
+        80% { transform:translateX(10%); }
+        100% { transform:translateX(-100%); }
+    }
+}
