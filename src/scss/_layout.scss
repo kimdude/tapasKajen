@@ -181,6 +181,17 @@ article > p {
 }
 
 //Booking page
+#bookingFooter {
+    margin-top: 0px;
+}
+
+#bookingMain {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-image: url("../images/bokning.jpg");
+    background-size: cover;
+}
+
 hr {
     background-color: base.$tertiary-color;
     width: 80%;
@@ -265,6 +276,9 @@ footer > div > p {
     //Menu page
     .menuFrame { border: 1px solid base.$quartinary-color; }
     .menuHeader { color: base.$quartinary-color !important; background-color: base.$secondary-color; }
+
+    //Booking page
+    #bookingMain { box-shadow: 100 1000 0 inset rgba(240, 237, 229, 0.7);}
 
     //Admin pages
     #adminNav { background-color: base.$quartinary-color; box-shadow: 2 2 10 rgba(138, 114, 100, 0.9); }
