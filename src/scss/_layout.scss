@@ -85,6 +85,15 @@ section > p {
     padding-right: 5%;
 }
 
+#introText > a {
+    color: base.$tertiary-color;
+}
+
+#openHrs {
+    margin: 40px 0px;
+    line-height: 1rem;
+}
+
 #displayReviews {
     display: flex;
     width: 90%;
@@ -272,6 +281,7 @@ footer > div > p {
 
     //Home page
     .reviewArticle { background-color: base.$tertiary-color;background-image: url("../images/citat_mörk.svg"); box-shadow: 2 2 10 rgba(138, 114, 100, 0.9); }
+    #introText > a { color: base.$quartinary-color; }
 
     //Menu page
     .menuFrame { border: 1px solid base.$quartinary-color; }
