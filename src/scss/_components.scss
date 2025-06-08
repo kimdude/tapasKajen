@@ -98,7 +98,8 @@ a:not(.active):hover, #makeReview:hover, #logout:hover {
 //Forms
 form {
     width: 350px;
-    justify-self: center;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 80px;
     padding: 20px 20px;
     border-radius: 5px;
@@ -173,7 +174,7 @@ textarea {
 //Screens under 640px
 @media screen and (max-width: 640px) {
     #openNav, #closeNav { display: block; }
-    nav:not(#adminNav) { width: 30%; margin-left: auto; }
+    nav:not(#adminNav) { margin-right: 10px; }
     nav > ul:not(#adminUl) { display: none; position: absolute; right: 20; padding: 20px 10px; background-color: base.$primary-color; }
 }
 
